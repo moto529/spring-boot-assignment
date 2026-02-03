@@ -1,15 +1,13 @@
 package mads.exam.controller;
 
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
-import jakarta.validation.constraints.Min;
 import mads.exam.dto.PostResponse;
 import mads.exam.dto.SuccessListResponse;
 import mads.exam.service.PostService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import mads.exam.exception.BadRequestException;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -31,24 +29,24 @@ public class PostController {
     }
 
     private int parsePageOrThrow(String pageRaw) {
+        // 未指定ならデフォルト 1
         if (pageRaw == null) {
             return 1;
         }
 
         if (pageRaw.isBlank()) {
-            throw new ConstraintViolationException("Invalid request", java.util.Set.of());
+            throw new BadRequestException(Map.of("page", List.of("must be a valid value")));
         }
 
         int page;
-
         try {
             page = Integer.parseInt(pageRaw);
         } catch (NumberFormatException e) {
-            throw new ConstraintViolationException("Invalid request", java.util.Set.of());
+            throw new BadRequestException(Map.of("page", List.of("must be a valid value")));
         }
 
         if (page < 1) {
-            throw new ConstraintViolationException("Invalid request", java.util.Set.of());
+            throw new BadRequestException(Map.of("page", List.of("must be greater than or equal to 1")));
         }
 
         return page;
