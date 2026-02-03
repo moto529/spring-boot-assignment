@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mads.exam.mapper.PostMapper">
+
+    <!-- Post(record) にマッピング -->
+    <resultMap id="PostResultMap" type="mads.exam.domain.Post">
+        <id property="id" column="post_id" />
+        <result property="title" column="title" />
+        <result property="createdAt" column="created_at" />
+    </resultMap>
+
+    <select id="selectPosts" resultMap="PostResultMap">
+        SELECT
+            post_id,
+            title,
+            created_at
+        FROM post
+        ORDER BY post_id ASC
+        LIMIT #{limit}
+        OFFSET #{offset}
+    </select>
+
+    <select id="countPosts" resultType="long">
+        SELECT COUNT(*) FROM post
+    </select>
+
+</mapper>
