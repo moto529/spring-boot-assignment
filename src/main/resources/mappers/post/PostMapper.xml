@@ -5,7 +5,6 @@
 
 <mapper namespace="mads.exam.mapper.PostMapper">
 
-    <!-- Post(record) にマッピング -->
     <resultMap id="PostResultMap" type="mads.exam.domain.Post">
         <id property="id" column="post_id" />
         <result property="title" column="title" />
